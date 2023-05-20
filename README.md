@@ -1,4 +1,4 @@
-# Chinese text-to-handwriting model(中文文本转手写模型)
+# Chinese text-to-handwriting model(中文文本转手写模型)-正在开发
 
 数据集下载地址为 [中科院自动化研究所的手写中文数据集](http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html)，将数据集保存为 `Data/Train`和 `Data/Test`
 
