@@ -1,9 +1,9 @@
-from datetime import datetime
 import struct
 import os
 import cv2 as cv
 import numpy as np
 from multiprocessing import Pool, cpu_count
+
 
 def Read_from_dgrl(dgrl):
     if not os.path.exists(dgrl):
@@ -98,11 +98,11 @@ def Create_image_folder(dataset_path):
 if __name__ == '__main__':
     pool = Pool(cpu_count())
     print(f"cpu count:{cpu_count()}")
-    path = 'Data/Train'
-    pool.apply_async(Create_image_folder, [path])
-    #Create_image_folder(path)
-    path = 'Data/Test'
-    pool.apply_async(Create_image_folder, [path])
-    #Create_image_folder(path)
+    dataset_path = 'Data/Train'
+    pool.apply_async(Create_image_folder, [dataset_path])
+    # Create_image_folder(path)
+    dataset_path = 'Data/Test'
+    pool.apply_async(Create_image_folder, [dataset_path])
+    # Create_image_folder(path)
     pool.close()
     pool.join()

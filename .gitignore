@@ -2,3 +2,5 @@
 *.dgrl
 *.jpg
 .devcontainer/
+tensorflow-2.7.0/
+tensorflow.tar.gz
