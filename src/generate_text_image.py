@@ -40,7 +40,7 @@ def split_text_by_language(text, max_chars_per_line):
 def estimate_character_size(font_file, font_size):
     '''估算特定字体和字号下字符的大致像素宽度和高度'''
     font = ImageFont.truetype(font_file, font_size)
-    character = "来"  # 选择一个具有代表性的字符
+    character = "圆"  # 选择一个具有代表性的字符
     left, top, right, bottom = font.getbbox(character)
     width = abs(right - left) + 0.5
     height = abs(bottom - top) + 0.5
@@ -75,6 +75,21 @@ def find_longest_length(array):
     return longest_length
 
 
+def read_file(file_path, max_chars_per_line):
+    '''读取并处理txt文件内容'''
+    with open(file_path, 'r', encoding='utf-8') as txt_file:
+        text = txt_file.read()
+
+    # 计算文本行数和图片大小
+    lines = []
+    for line in text.split('\n'):
+        for temp in split_text_by_language(line, max_chars_per_line):
+            lines.append(temp)
+    print(lines)
+
+    return lines
+
+
 def generate_text_image(input_file,
                         output_file,
                         font_file='Data/OPlusSans.ttf',
@@ -90,34 +105,23 @@ def generate_text_image(input_file,
     font_size = 24
     font = ImageFont.truetype(font_file, font_size)
 
-    # 读取txt文件内容
-    with open(input_file, 'r') as txt_file:
-        text = txt_file.read()
-
     # 计算文本行数和图片大小
-    lines = []
-    for line in text.split('\n'):
-        for temp in split_text_by_language(line, max_chars_per_line):
-            lines.append(temp)
-    print(lines)
-    num_lines = len(lines)
-    print(num_lines)
-
-    max_line_length = find_longest_length(lines)
+    lines = read_file(input_file, max_chars_per_line=max_chars_per_line)
     font_width, font_height = estimate_character_size(font_file, font_size)
-    image_width = int(max_line_length * (font_width + 4))  # 假设每个字符占用20个像素的宽度
-    image_height = int(num_lines * (font_height + 8))  # 假设每行文本占用40个像素的高度
+    image_width = int(find_longest_length(lines) *
+                      (font_width + 4))  # 设定每个字符的宽度
+    image_height = int(len(lines) * (font_height + 8))  # 设定每行文本的高度
 
     # 创建空白图片
     image = Image.new('RGB', (image_width, image_height), 'white')
     draw = ImageDraw.Draw(image)
 
     # 在图片上绘制文本,设置5%的上边距
-    y = image_height * 0.05
+    margin_top = image_height * 0.05
     for line in lines:
-        x = image_width * 0.05
-        draw.text((x, y), line, font=font, fill='black')
-        y += font_size + 4  # 行间距设为4个像素
+        margin_left = image_width * 0.05
+        draw.text((margin_left, margin_top), line, font=font, fill='black')
+        margin_top += font_size + 4  # 行间距设为4个像素
 
     # 保存图片
     image.save(output_file)
