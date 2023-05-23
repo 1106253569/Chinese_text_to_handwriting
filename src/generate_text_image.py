@@ -131,5 +131,5 @@ def generate_text_image(input_file,
 if __name__ == '__main__':
     # 示例用法
     Input_file = 'input.txt'
-    Output_file = 'output.png'
+    Output_file = 'output/output.png'
     generate_text_image(Input_file, Output_file)
